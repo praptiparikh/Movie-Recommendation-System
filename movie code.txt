@@ -1,0 +1,51 @@
+from os import name
+from pandas.io.parsers.readers import read_csv
+import csv
+import pandas as pd
+
+
+class Movie:
+   def __init__(self):
+        self.movies = pd.read_csv("Movies_data.csv")
+
+   def byname(self):
+        name = input("Enter the movie name: ")
+        result = self.movies[self.movies['Title'].str.contains(name, case=False)]
+
+        if not result.empty:
+           print("Matching Movies:\n", result)
+
+           if len(result) > 0:
+                first_movie_genre = result.iloc[0]['Genre']
+
+                same_genre_movies = self.movies[self.movies['Genre'].str.contains(first_movie_genre, case=False)]
+
+                if not same_genre_movies.empty:
+                    print("\nMovies with the Same Genre:",same_genre_movies)
+                else:
+                    print("\nNo other movies found with the same genre.")
+        else:
+          print("No movies found with that name.")
+
+   def bygenre(self):
+        gen = input("enter the movie genre:")
+        result = self.movies[self.movies['Genre'].str.contains(gen, case=False)]
+
+        if not result.empty:
+          print("Movies in the specified genre:",result)
+        else:
+            print("No movies found in that genre.")
+
+m = Movie()
+print("Press 1 for search by name\n Press 2 for search by genre")
+a = 'yes'
+while a.lower() == 'yes':
+    search = int(input("search by: "))
+    if search == 1:
+      m.byname()
+    elif search == 2:
+      m.bygenre()
+    else:
+      print("Invalid input. Please enter 1 or 2.")
+
+    a = input("Return to search (yes/no): ")
